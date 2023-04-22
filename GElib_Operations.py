@@ -15,12 +15,12 @@ class GElib_Operations:
 
     def get_gather(self,sparsity):
         # initialize mask
-        C = torch.empty(N,N)
+        C = torch.empty(self.N,self.N)
         torch.nn.init.sparse_(C,sparsity = sparsity)
         Cmask = cnine.Rmask1(C)
         
         # gather
-        G = F.gather(Cmask) 
+        G = self.F.gather(Cmask) 
         return G
 
     def get_CGproduct(self,num_products): 
