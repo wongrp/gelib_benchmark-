@@ -42,11 +42,11 @@ for max_l in max_l_range:
             dt = (tf-ti).total_seconds() 
             CG_times_e3nn[max_l,channel_id,trial_id]= dt
 
-            # ti = datetime.now() 
-            # gelib_ops.get_CGproduct()
-            # tf = datetime.now() 
-            # dt = (tf-ti).total_seconds() 
-            # CG_times_gelib[max_l,channel_id,trial_id]= dt
+            ti = datetime.now() 
+            gelib_ops.get_CGproduct()
+            tf = datetime.now() 
+            dt = (tf-ti).total_seconds() 
+            CG_times_gelib[max_l,channel_id,trial_id]= dt
 
 CG_times_e3nn = np.mean(CG_times_e3nn,axis = 2)
 CG_times_gelib = np.mean(CG_times_gelib,axis = 2)
