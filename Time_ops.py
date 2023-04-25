@@ -6,16 +6,17 @@ from E3nn_Operations import *
 from GElib_Operations import * 
 
 # irrep parameters 
-num_irreps = 20
-num_trials = 1
-max_l_max = 5
-num_channels_min = 4
-num_channels_max = 32
+num_irreps = 100
+num_trials = 10
+max_l_max = 6
+num_channels_min = 1
+num_channels_max = 5
+num_channels_increment = 1
 
 # parameter arrays 
 max_l_range = range(max_l_max+1)
-num_channels_range = np.arange(num_channels_min,num_channels_max+1,4)
-channel_id_max = int(num_channels_max/4)
+num_channels_range = np.arange(num_channels_min,num_channels_max+1,num_channels_increment)
+channel_id_max = int((num_channels_max-num_channels_min)/num_channels_increment+1)
 
 # cg product time arrays
 CG_times_e3nn = np.zeros((max_l_max+1,channel_id_max,num_trials))
@@ -34,14 +35,14 @@ for max_l in max_l_range:
         for trial_id in range(num_trials):
             print("trial max_l={},num_channels={},trial_id={}".format(max_l,num_channels,trial_id))
             e3nn_ops = E3nn_Operations(num_irreps, max_l,int(num_channels))
-            # gelib_ops = GElib_Operations(num_irreps,max_l,num_channels)
+            gelib_ops = GElib_Operations(num_irreps,max_l,num_channels)
 
             ti = datetime.now() 
             e3nn_ops.get_CGproduct()
             tf = datetime.now() 
             dt = (tf-ti).total_seconds() 
             CG_times_e3nn[max_l,channel_id,trial_id]= dt
-
+            
             ti = datetime.now() 
             gelib_ops.get_CGproduct()
             tf = datetime.now() 
@@ -53,7 +54,10 @@ CG_times_gelib = np.mean(CG_times_gelib,axis = 2)
 
 plt.figure()
 for i in range(channel_id_max):
-    plt.plot(max_l_range,CG_times_e3nn[:,i],label = "{} channels".format(int(num_channels_max/channel_id_max*i+num_channels_min)))
+    plt.plot(max_l_range,CG_times_e3nn[:,i],'--',label = "{} channels; E3nn".format(int(num_channels_max/channel_id_max*i+num_channels_min)))
+    plt.plot(max_l_range,CG_times_gelib[:,i],label = "{} channels; GElib".format(int(num_channels_max/channel_id_max*i+num_channels_min)))
+plt.xlabel("Maximum l")
+plt.ylabel("Time Elapsed (s)")
 plt.legend()
 plt.savefig("plot")
 

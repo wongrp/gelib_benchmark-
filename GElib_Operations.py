@@ -9,9 +9,9 @@ class GElib_Operations:
         self.N = N 
         self.max_l = max_l
         self.num_channels = num_channels 
-        self.tau = num_channels*np.ones((max_l)).astype(int)
+        self.tau = num_channels*np.ones((max_l+1)).astype(int)
 
-        self.F = SO3vecArr.randn(1, [N], self.tau) 
+        self.F = SO3vecArr.randn(1, [N,1], self.tau) 
 
     def get_gather(self,sparsity):
         # initialize mask
@@ -23,17 +23,11 @@ class GElib_Operations:
         G = self.F.gather(Cmask) 
         return G
 
-    def get_CGproduct(self,num_products): 
-        G = copy(self.F)
-        for i in range(num_products):
-            G = CGproduct(G,G)
-        return G
+    def get_CGproduct(self): 
+        return CGproduct(self.F,self.F)
 
-    def get_DiagCGproduct(self,num_products): 
-        G = copy(self.F)
-        for i in range(num_products):
-            G = DiagCGproduct(G,G)
-        return G
+    def get_DiagCGproduct(self): 
+        return DiagCGproduct(self.F, self.F)
 
 
 

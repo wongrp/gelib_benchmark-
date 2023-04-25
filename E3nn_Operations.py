@@ -15,6 +15,7 @@ class E3nn_Operations:
         irreps_list = []
         for l in range(max_l+1): 
             irreps_list.append((num_channels,(l,self.parity)))
+        print(irreps_list)
         self.ir = o3.Irreps(irreps_list)
         self.ir_rand = self.ir.randn(num_irreps,-1)
         self.tp = o3.FullTensorProduct(self.ir,self.ir)
