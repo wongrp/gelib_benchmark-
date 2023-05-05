@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib import lines
-import pandas as pd
 
 from E3nn_Operations import * 
 from GElib_Operations import * 
@@ -29,11 +28,11 @@ batch_size = 1
 num_irreps_range = [25]
 num_trials = 10
 max_l_min = 0
-max_l_max = 5
+max_l_max = 8
 
 # parameter arrays 
 max_l_range = np.arange(max_l_min,max_l_max+1,1)
-num_channels_range = [128,196]
+num_channels_range = [128,164]
 channel_id_max = len(num_channels_range)
 
 # cg product time arrays
