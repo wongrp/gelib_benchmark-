@@ -9,8 +9,11 @@ from GElib_Operations import *
 import gc
 import os
 
+# plt params
+plt.rcParams.update({'font.size': 16})
+
 # folder
-folder = "Time_CG_May3/SO3vecArr"
+folder = "Time_CG_May11"
 if not os.path.exists(folder):
     os.makedirs(folder)
 
@@ -28,11 +31,11 @@ batch_size = 1
 num_irreps_range = [25]
 num_trials = 10
 max_l_min = 0
-max_l_max = 8
+max_l_max =10
 
 # parameter arrays 
 max_l_range = np.arange(max_l_min,max_l_max+1,1)
-num_channels_range = [128,164]
+num_channels_range = [4,16,32]
 channel_id_max = len(num_channels_range)
 
 # cg product time arrays
@@ -118,10 +121,13 @@ CG_times_gelib = np.mean(CG_times_gelib,axis = -1)
 
 f1 = plt.figure(1)
 ax1 = f1.add_subplot()
+plt.tight_layout(pad = 2)
 f2 = plt.figure(2)
 ax2 = f2.add_subplot()
+plt.tight_layout(pad = 2)
 f3 = plt.figure(3)
 ax3 = f3.add_subplot()
+plt.tight_layout(pad = 2)
 
 # Plot empty lines for legend 
 handle_list = []
@@ -150,20 +156,20 @@ for j in range(len(num_irreps_range)):
 # labels
 ax1.set_xlabel("Maximum L")
 ax1.set_ylabel("Time Elapsed (s)")
-ax1.legend(handles = handle_list)
+ax1.legend(handles = handle_list,fontsize = 13)
 f1.savefig("{}/cg_times_{}_N={}_num_channels={}_{}trials_e3nn={}_gelib={}".format(folder,cgmode,num_irreps_range,num_channels_range,num_trials,with_e3nn,with_gelib))
 
 if with_e3nn == True and with_gelib == True: 
     ax2.set_xlabel("Maximum L")
     ax2.set_ylabel("Ratio")
-    ax2.legend(handles = handle_list[2:])
+    ax2.legend(handles = handle_list[2:],fontsize = 13)
     f2.savefig("{}/cg_times_{}_ratio_N={}_num_channels={}_{}trials_e3nn={}_gelib={}".format(folder,cgmode,num_irreps_range,num_channels_range,num_trials,with_e3nn,with_gelib))
 
 if with_mflops == True and cgmode == 'part': 
     plt.figure(3)
     plt.xlabel("Maximum L")
-    plt.ylabel("mflops")
-    plt.legend(handles = handle_list)
+    plt.ylabel("MFLOPS")
+    plt.legend(handles = handle_list, fontsize = 13)
     plt.savefig("{}/cg_mflops_{}_N={}_num_channels={}_{}trials_e3nn={}_gelib={}".format(folder,cgmode,num_irreps_range,num_channels_range,num_trials,with_e3nn,with_gelib))
 
 
